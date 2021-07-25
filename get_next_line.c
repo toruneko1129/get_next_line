@@ -1,17 +1,16 @@
 #include "get_next_line.h"
-#include <stdio.h>
 
-static int	load_state(int fd, char *pre, char **res, char **buf)
+static int	load_state(int fd, char **pre, char **res, char **buf)
 {
 	if (fd < 0 || BUFFER_SIZE <= 0)
 	{
-		free(pre);
-		pre = NULL;
+		free(*pre);
+		*pre = NULL;
 		return (FAILED);
 	}
-	*res = ft_strndup(pre, MAX_SIZE);
-	free(pre);
-	pre = NULL;
+	*res = ft_strndup(*pre, MAX_SIZE);
+	free(*pre);
+	*pre = NULL;
 	*buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (*res == NULL || *buf == NULL)
 	{
@@ -29,7 +28,6 @@ static int	get_text_from_file(int fd, char **res, char *buf)
 	while (ft_strchr(*res, '\n') == NULL)
 	{
 		cnt = read(fd, buf, BUFFER_SIZE);
-		printf("%zd\n", cnt);
 		if (cnt == -1)
 		{
 			free(*res);
@@ -86,7 +84,7 @@ char	*get_next_line(int fd)
 
 	res = NULL;
 	buf = NULL;
-	if (load_state(fd, pre, &res, &buf) || get_text_from_file(fd, &res, buf))
+	if (load_state(fd, &pre, &res, &buf) || get_text_from_file(fd, &res, buf))
 		return (NULL);
 	line = NULL;
 	get_line_from_buf(&pre, &res, &line);
