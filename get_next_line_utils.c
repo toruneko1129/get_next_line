@@ -33,8 +33,8 @@ char	*ft_strndup(const char *s1, size_t n)
 	size_t	len;
 
 	len = ft_strlen(s1);
-	if (n < len)
-		n = len;
+	if (len > n)
+		len = n;
 	res = (char *)malloc((len + 1) * sizeof(char));
 	if (res == NULL)
 		return (NULL);

@@ -1,4 +1,5 @@
 #include "get_next_line.h"
+#include <stdio.h>
 
 static int	load_state(int fd, char *pre, char **res, char **buf)
 {
@@ -28,6 +29,7 @@ static int	get_text_from_file(int fd, char **res, char *buf)
 	while (ft_strchr(*res, '\n') == NULL)
 	{
 		cnt = read(fd, buf, BUFFER_SIZE);
+		printf("%zd\n", cnt);
 		if (cnt == -1)
 		{
 			free(*res);
@@ -71,7 +73,7 @@ static void	get_line_from_buf(char **pre, char **res, char **line)
 			return ;
 		}
 	}
-	*line = ft_strndup(*res, end - *res);
+	*line = ft_strndup(*res, end - *res + 1);
 	free(*res);
 }
 
