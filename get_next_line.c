@@ -24,11 +24,15 @@ static int	load_state(int fd, char **pre, char **res, char **buf)
 static int	get_text_from_file(int fd, char **res, char *buf)
 {
 	ssize_t		cnt;
+	size_t		i;
 
-	while (ft_strchr(*res, '\n') == NULL)
+	cnt = ft_strlen(*res);
+	i = 0;
+	while (ft_strchr(*res + i, '\n') == NULL)
 	{
+		i += cnt;
 		cnt = read(fd, buf, BUFFER_SIZE);
-		if (cnt == -1)
+		if (cnt == -1 || *res == NULL)
 		{
 			free(*res);
 			free(buf);
@@ -38,11 +42,6 @@ static int	get_text_from_file(int fd, char **res, char *buf)
 			break ;
 		*(buf + cnt) = '\0';
 		*res = ft_strjoin(*res, buf);
-		if (*res == NULL)
-		{
-			free(buf);
-			return (FAILED);
-		}
 	}
 	free(buf);
 	return (SUCCESS);
@@ -50,18 +49,11 @@ static int	get_text_from_file(int fd, char **res, char *buf)
 
 static void	get_line_from_buf(char **pre, char **res, char **line)
 {
-	size_t	len;
 	char	*end;
 
-	len = ft_strlen(*res);
-	if (!len)
-	{
-		free(*res);
-		return ;
-	}
 	end = ft_strchr(*res, '\n');
 	if (end == NULL)
-		end = *res + len;
+		end = ft_strchr(*res, '\0');
 	else if (*(end + 1))
 	{
 		*pre = ft_strndup(end + 1, MAX_SIZE);
@@ -71,7 +63,10 @@ static void	get_line_from_buf(char **pre, char **res, char **line)
 			return ;
 		}
 	}
-	*line = ft_strndup(*res, end - *res + 1);
+	if (**res == '\0')
+		*line = NULL;
+	else
+		*line = ft_strndup(*res, end - *res + 1);
 	free(*res);
 }
 
