@@ -28,7 +28,7 @@ static int	get_text_from_file(int fd, char **res, char *buf)
 
 	cnt = ft_strlen(*res);
 	i = 0;
-	while (ft_strchr(*res + i, '\n') == NULL)
+	while (*res == NULL || ft_strchr(*res + i, '\n') == NULL)
 	{
 		i += cnt;
 		cnt = read(fd, buf, BUFFER_SIZE);
@@ -47,8 +47,9 @@ static int	get_text_from_file(int fd, char **res, char *buf)
 	return (SUCCESS);
 }
 
-static void	get_line_from_buf(char **pre, char **res, char **line)
+static char	*get_line_from_buf(char **pre, char **res)
 {
+	char	*line;
 	char	*end;
 
 	end = ft_strchr(*res, '\n');
@@ -60,14 +61,15 @@ static void	get_line_from_buf(char **pre, char **res, char **line)
 		if (*pre == NULL)
 		{
 			free(*res);
-			return ;
+			return (NULL);
 		}
 	}
 	if (**res == '\0')
-		*line = NULL;
+		line = NULL;
 	else
-		*line = ft_strndup(*res, end - *res + 1);
+		line = ft_strndup(*res, end - *res + 1);
 	free(*res);
+	return (line);
 }
 
 char	*get_next_line(int fd)
@@ -81,7 +83,6 @@ char	*get_next_line(int fd)
 	buf = NULL;
 	if (load_state(fd, &pre, &res, &buf) || get_text_from_file(fd, &res, buf))
 		return (NULL);
-	line = NULL;
-	get_line_from_buf(&pre, &res, &line);
+	line = get_line_from_buf(&pre, &res);
 	return (line);
 }
