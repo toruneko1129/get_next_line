@@ -63,3 +63,23 @@ char	*ft_strjoin(char *s1, const char *s2)
 	free(s1);
 	return (res);
 }
+
+void	ft_lstdelone(t_list **begin, int fd)
+{
+	t_list	*lst;
+	t_list	*tmp;
+
+	lst = *begin;
+	if (lst->fd == fd)
+	{
+		*begin = lst->next;
+		free(lst);
+		return ;
+	}
+	while (lst->next->fd != fd)
+		lst = lst->next;
+	tmp = lst->next;
+	lst->next = lst->next->next;
+	free(tmp->text);
+	free(tmp);
+}
