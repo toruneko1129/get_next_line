@@ -61,5 +61,33 @@ char	*ft_strjoin(char *s1, const char *s2)
 	while (len1--)
 		*(res + len1) = *(s1 + len1);
 	free(s1);
+	s1 = NULL;
 	return (res);
+}
+
+void	ft_lstdelone(t_list **front, int fd)
+{
+	t_list	*lst;
+	t_list	*tmp;
+
+	if (front == NULL || *front == NULL)
+		return ;
+	lst = *front;
+	if (lst->fd == fd)
+	{
+		*front = lst->next;
+		free(lst);
+		lst = NULL;
+		return ;
+	}
+	if (lst->next == NULL)
+		return ;
+	while (lst->next->fd != fd)
+		lst = lst->next;
+	tmp = lst->next;
+	lst->next = lst->next->next;
+	free(tmp->text);
+	tmp->text = NULL;
+	free(tmp);
+	tmp = NULL;
 }
