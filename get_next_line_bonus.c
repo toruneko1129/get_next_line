@@ -1,5 +1,5 @@
 #include "get_next_line_bonus.h"
-#include <stdio.h>
+
 static t_list	*load_state(int fd, t_list **front)
 {
 	t_list	*lst;
@@ -73,11 +73,10 @@ static char	*get_line_from_buf(t_list **front, t_list *pre, char **res)
 	char	*line;
 	char	*end;
 
-	line = NULL;
 	end = ft_strchr(*res, '\n');
 	if (end == NULL)
 		end = ft_strchr(*res, '\0');
-	if (*end && *(end + 1))
+	if (*end == '\n' && *(end + 1))
 	{
 		pre->text = ft_strndup(end + 1, MAX_SIZE);
 		if (pre->text == NULL)
@@ -89,6 +88,7 @@ static char	*get_line_from_buf(t_list **front, t_list *pre, char **res)
 	}
 	else
 		ft_lstdelone(front, pre->fd);
+	line = NULL;
 	if (**res)
 		line = ft_strndup(*res, end - *res + 1);
 	if (**res && line == NULL)
@@ -100,7 +100,6 @@ static char	*get_line_from_buf(t_list **front, t_list *pre, char **res)
 char	*get_next_line(int fd)
 {
 	static t_list	*lst = NULL;
-	char			*line;
 	t_list			*pre;
 	char			*res;
 	char			*buf;
@@ -110,11 +109,9 @@ char	*get_next_line(int fd)
 		return (NULL);
 	res = NULL;
 	buf = NULL;
-	line = NULL;
 	if (load_text(&lst, pre, &res, &buf))
 		return (NULL);
 	if (get_text_from_file(fd, &lst, &res, buf))
 		return (NULL);
-	line = get_line_from_buf(&lst, pre, &res);
-	return (line);
+	return (get_line_from_buf(&lst, pre, &res));
 }
