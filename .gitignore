@@ -1,6 +1,7 @@
 gnlTester
 Makefile
 test_get_next_line.c
+test_write.c
 *.o
 a.out
 nonl

@@ -19,6 +19,6 @@ size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strndup(const char *s1, size_t n);
 char	*ft_strjoin(char *s1, const char *s2);
-void	ft_lstdelone(t_list **begin, int fd);
+void	ft_lstdelone(t_list **front, int fd);
 
 #endif
