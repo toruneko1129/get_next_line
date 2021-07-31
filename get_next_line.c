@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:02 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/07/28 21:09:07 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/08/01 00:36:27 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static t_list	*load_state(int fd, t_list **front)
 	t_list	*lst;
 	t_list	*new;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || (ssize_t)BUFFER_SIZE <= 0)
 		return (NULL);
 	lst = *front;
 	while (lst != NULL)
@@ -41,7 +41,7 @@ static int	load_text(t_list **front, t_list *pre, char **res, char **buf)
 	*res = ft_strndup(pre->text, MAX_SIZE);
 	free(pre->text);
 	pre->text = NULL;
-	*buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	*buf = (char *)malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
 	if (*res == NULL || *buf == NULL)
 	{
 		free(*res);
