@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:11 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/08/01 17:49:23 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/08/01 21:17:21 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,30 +25,35 @@ static int	load_state(int fd, t_map **map, t_map **res)
 		return (FAILED);
 	(*res)->fd = fd;
 	(*res)->lst = NULL;
+	(*res)->tlen = 0;
+	(*res)->nlen = 0;
 	(*res)->next = *map;
 	*map = *res;
 	return (SUCCESS);
 }
 
-static int	get_text_from_file(t_map **map, char *buf, t_map **res)
+static int	get_text_from_file(char *buf, t_map **res)
 {
 	t_list	*last;
+	char	*endl;
 	ssize_t	cnt;
 
 	last = (*res)->lst;
-	while (last == NULL || ft_strchr(last->text, '\n'))
+	endl = ft_strchr(last, '\n');
+	cnt = 1;
+	while (cnt && endl == NULL)
 	{
 		cnt = read((*res)->fd, buf, (size_t)BUFFER_SIZE);
 		if (cnt == -1)
-		{
-			free(buf);
-			ft_mapdelone(map, res);
 			return (FAILED);
-		}
-		else if (cnt == 0)
-			break;
 		*(buf + cnt) = '\0';
+		if (ft_lstadd_back(&last, buf, cnt))
+			return (FAILED);
+		(*res)->tlen += cnt;
+		endl = ft_strchr(last, '\n');
 	}
+	if (endl != NULL)
+		(*res)->nlen = ft_strchr(last, '\0') - endl;
 	return (SUCCESS);
 }
 
@@ -64,7 +69,12 @@ char	*get_next_line(int fd)
 	if (buf == NULL)
 		return (NULL);
 	res = NULL;
-	if (load_state(fd, &map, &res) || get_text_from_file(&map, buf, &res))
+	if (load_state(fd, &map, &res) || get_text_from_file(buf, &res))
+	{
+		ft_mapdelone(&map, &res);
+		free(buf);
 		return (NULL);
+	}
+	free(buf);
 	return (NULL);
 }
