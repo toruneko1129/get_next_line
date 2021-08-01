@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:11 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/08/01 22:19:17 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/08/01 23:34:24 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,59 @@ static int	get_text_from_file(t_map *res, char *buf)
 	}
 	if (endl != NULL)
 		res->nlen = ft_strchr(last, '\0') - endl - 1;
+	if (!res->tlen)
+		return (FAILED);
 	return (SUCCESS);
+}
+
+static int	save_state(t_map *res, char *text, size_t j)
+{
+	char	*save;
+	t_list	*new;
+	size_t	i;
+
+	save = (char *)malloc((res->nlen + 1) * sizeof(char));
+	new = (t_list *)malloc(sizeof(t_list));
+	if (new == NULL || save == NULL)
+	{
+		free(save);
+		free(new);
+		return (FAILED);
+	}
+	*(save + res->nlen) = '\0';
+	i = 0;
+	while (*(text + j))
+		*(save + i++) = *(text + j++);
+	new->text = save;
+	new->next = NULL;
+	ft_lstclear(&(res->lst));
+	res->lst = new;
+	return (SUCCESS);
+}
+
+static int	get_line_from_buf(t_map *res, char **line)
+{
+	t_list	*lst;
+	size_t	i;
+	size_t	j;
+
+	*line = (char *)malloc((res->tlen - res->nlen + 1) * sizeof(char));
+	if (*line == NULL)
+		return (FAILED);
+	*(*line + res->tlen - res->nlen) = '\0';
+	lst = res->lst;
+	i = 0;
+	j = 0;
+	while (i < res->tlen - res->nlen)
+	{
+		if (!*(lst->text + j))
+		{
+			lst = lst->next;
+			j = 0;
+		}
+		*(*line + i++) = *(lst->text + j++);
+	}
+	return (save_state(res, lst->text, j));
 }
 
 char	*get_next_line(int fd)
@@ -64,6 +116,7 @@ char	*get_next_line(int fd)
 	static t_map	*map = NULL;
 	t_map			*res;
 	char			*buf;
+	char			*line;
 
 	res = NULL;
 	if (fd < 0 || (ssize_t)BUFFER_SIZE <= 0 || load_state(fd, &map, &res))
@@ -71,12 +124,16 @@ char	*get_next_line(int fd)
 	buf = (char *)malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
 	if (buf == NULL)
 		return (NULL);
-	if (get_text_from_file(res, buf))
+	line = NULL;
+	if (get_text_from_file(res, buf) || get_line_from_buf(res, &line))
 	{
 		ft_mapdelone(&map, &res);
 		free(buf);
+		free(line);
 		return (NULL);
 	}
 	free(buf);
-	return (NULL);
+	if (!*(res->lst->text))
+		ft_mapdelone(&map, &res);
+	return (line);
 }
