@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:21 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/08/01 15:40:09 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/08/01 16:21:34 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_mapdelone(t_map **map, t_map **res)
 	while (pre->next != *res)
 		pre = pre->next;
 	pre->next = (*res)->next;
-	ft_lstclear((*res)->lst);
+	ft_lstclear(&((*res)->lst));
 	free(*res);
 	*res = NULL;
 }
