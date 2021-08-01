@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:21 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/08/01 16:21:34 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/08/01 17:41:41 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,23 @@ void	ft_mapdelone(t_map **map, t_map **res)
 	ft_lstclear(&((*res)->lst));
 	free(*res);
 	*res = NULL;
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	if (s == NULL)
+		return (NULL);
+	if (!c)
+		return ((char *)s + ft_strlen(s));
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		++s;
+	}
+	return (NULL);
+}
+
+int	ft_lstadd_back(t_list **lst, char *buf)
+{
 }
