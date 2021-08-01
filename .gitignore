@@ -7,3 +7,5 @@ a.out
 nonl
 nl
 munl
+run.sh
+*.txt

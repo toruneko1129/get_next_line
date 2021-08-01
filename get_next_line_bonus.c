@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:11 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/08/01 23:34:24 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/08/01 23:50:46 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ static int	save_state(t_map *res, char *text, size_t j)
 	new->next = NULL;
 	ft_lstclear(&(res->lst));
 	res->lst = new;
+	res->tlen = res->nlen;
+	res->nlen = 0;
 	return (SUCCESS);
 }
 
@@ -117,7 +119,9 @@ char	*get_next_line(int fd)
 	t_map			*res;
 	char			*buf;
 	char			*line;
+	static int iTest = 0;
 
+	iTest++;
 	res = NULL;
 	if (fd < 0 || (ssize_t)BUFFER_SIZE <= 0 || load_state(fd, &map, &res))
 		return (NULL);
