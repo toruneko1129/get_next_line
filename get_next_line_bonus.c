@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:11 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/08/01 21:17:21 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/08/01 21:43:42 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,14 @@ static int	get_text_from_file(char *buf, t_map **res)
 		*(buf + cnt) = '\0';
 		if (ft_lstadd_back(&last, buf, cnt))
 			return (FAILED);
+		if ((*res)->lst == NULL)
+			(*res)->lst = last;
 		(*res)->tlen += cnt;
 		endl = ft_strchr(last, '\n');
 	}
 	if (endl != NULL)
-		(*res)->nlen = ft_strchr(last, '\0') - endl;
+		(*res)->nlen = ft_strchr(last, '\0') - endl - 1;
+	t_list	*tmp = (*res)->lst;
 	return (SUCCESS);
 }
 
