@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:11 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/08/02 00:55:06 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/08/02 01:25:58 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,10 @@ static int	get_line_from_buf(t_map *res, char **line)
 		}
 		*(*line + i++) = *(lst->text + j++);
 	}
-	return (save_state(res, lst->text, j));
+	if (res->nlen)
+		return (save_state(res, lst->text, j));
+	ft_lstclear(&(res->lst));
+	return (SUCCESS);
 }
 
 char	*get_next_line(int fd)
@@ -135,7 +138,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	free(buf);
-	if (!*(res->lst->text))
+	if (res->lst == NULL)
 		ft_mapdelone(&map, &res);
 	return (line);
 }
