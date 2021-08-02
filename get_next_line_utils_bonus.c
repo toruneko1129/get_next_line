@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:21 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/08/02 11:05:40 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/08/02 16:52:03 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ft_mapdelone(t_map **map, t_map **res)
 	if (*map == *res)
 	{
 		*map = (*map)->next;
+		ft_lstclear(&((*res)->lst));
 		free(*res);
 		*res = NULL;
 		return ;
