@@ -6,15 +6,15 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:21 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/08/02 16:52:03 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/09/03 23:10:21 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-void	ft_lstclear(t_list **lst)
+void	ft_lstclear(t_buf **lst)
 {
-	t_list	*front;
+	t_buf	*front;
 
 	front = *lst;
 	while (front != NULL)
@@ -48,7 +48,7 @@ void	ft_mapdelone(t_map **map, t_map **res)
 	*res = NULL;
 }
 
-char	*ft_strchr(t_list *lst, int c)
+char	*ft_strchr(t_buf *lst, int c)
 {
 	char	*s;
 
@@ -66,11 +66,11 @@ char	*ft_strchr(t_list *lst, int c)
 	return (NULL);
 }
 
-int	ft_lstadd_back(t_list **last, char *buf, ssize_t cnt)
+int	ft_lstadd_back(t_buf **last, char *buf, ssize_t cnt)
 {
-	t_list	*new;
+	t_buf	*new;
 
-	new = (t_list *)malloc(sizeof(t_list));
+	new = (t_buf *)malloc(sizeof(t_buf));
 	if (new == NULL)
 		return (FAILED);
 	new->text = (char *)malloc((cnt + 1) * sizeof(char));

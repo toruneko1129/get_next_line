@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:11 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/08/02 16:52:06 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/09/03 23:05:54 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	load_state(int fd, t_map **map, t_map **res)
 
 static int	get_text_from_file(t_map *res, char *buf)
 {
-	t_list	*last;
+	t_buf	*last;
 	char	*endl;
 	ssize_t	cnt;
 
@@ -63,11 +63,11 @@ static int	get_text_from_file(t_map *res, char *buf)
 static int	save_state(t_map *res, char *text, size_t j)
 {
 	char	*save;
-	t_list	*new;
+	t_buf	*new;
 	size_t	i;
 
 	save = (char *)malloc((res->nlen + 1) * sizeof(char));
-	new = (t_list *)malloc(sizeof(t_list));
+	new = (t_buf *)malloc(sizeof(t_buf));
 	if (new == NULL || save == NULL)
 	{
 		free(save);
@@ -89,7 +89,7 @@ static int	save_state(t_map *res, char *text, size_t j)
 
 static int	get_line_from_buf(t_map *res, char **line)
 {
-	t_list	*lst;
+	t_buf	*lst;
 	size_t	i;
 	size_t	j;
 
