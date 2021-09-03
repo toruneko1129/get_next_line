@@ -6,13 +6,13 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:21 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/09/03 23:10:21 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/09/03 23:36:48 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-void	ft_lstclear(t_buf **lst)
+void	gnl_lstclear(t_buf **lst)
 {
 	t_buf	*front;
 
@@ -27,14 +27,14 @@ void	ft_lstclear(t_buf **lst)
 	}
 }
 
-void	ft_mapdelone(t_map **map, t_map **res)
+void	gnl_mapdelone(t_map **map, t_map **res)
 {
 	t_map	*pre;
 
 	if (*map == *res)
 	{
 		*map = (*map)->next;
-		ft_lstclear(&((*res)->lst));
+		gnl_lstclear(&((*res)->lst));
 		free(*res);
 		*res = NULL;
 		return ;
@@ -42,13 +42,13 @@ void	ft_mapdelone(t_map **map, t_map **res)
 	pre = *map;
 	while (pre->next != *res)
 		pre = pre->next;
-	ft_lstclear(&((*res)->lst));
+	gnl_lstclear(&((*res)->lst));
 	pre->next = pre->next->next;
 	free(*res);
 	*res = NULL;
 }
 
-char	*ft_strchr(t_buf *lst, int c)
+char	*gnl_strchr(t_buf *lst, int c)
 {
 	char	*s;
 
@@ -66,7 +66,7 @@ char	*ft_strchr(t_buf *lst, int c)
 	return (NULL);
 }
 
-int	ft_lstadd_back(t_buf **last, char *buf, ssize_t cnt)
+int	gnl_lstadd_back(t_buf **last, char *buf, ssize_t cnt)
 {
 	t_buf	*new;
 

@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:15 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/09/03 23:12:58 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/09/03 23:44:56 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# define MAX_SIZE -1
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 4
+# endif
 # define SUCCESS 0
 # define FAILED 1
 
@@ -35,9 +37,9 @@ typedef struct s_map
 }	t_map;
 
 char	*get_next_line(int fd);
-void	ft_lstclear(t_buf **lst);
-void	ft_mapdelone(t_map **map, t_map **res);
-char	*ft_strchr(t_buf *lst, int c);
-int		ft_lstadd_back(t_buf **last, char *buf, ssize_t cnt);
+void	gnl_lstclear(t_buf **lst);
+void	gnl_mapdelone(t_map **map, t_map **res);
+char	*gnl_strchr(t_buf *lst, int c);
+int		gnl_lstadd_back(t_buf **last, char *buf, ssize_t cnt);
 
 #endif

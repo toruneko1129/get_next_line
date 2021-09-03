@@ -6,7 +6,7 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:11 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/09/03 23:05:54 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/09/03 23:35:58 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	get_text_from_file(t_map *res, char *buf)
 	ssize_t	cnt;
 
 	last = res->lst;
-	endl = ft_strchr(last, '\n');
+	endl = gnl_strchr(last, '\n');
 	cnt = 1;
 	while (endl == NULL && cnt)
 	{
@@ -46,15 +46,15 @@ static int	get_text_from_file(t_map *res, char *buf)
 		if (cnt == -1)
 			return (FAILED);
 		*(buf + cnt) = '\0';
-		if (ft_lstadd_back(&last, buf, cnt))
+		if (gnl_lstadd_back(&last, buf, cnt))
 			return (FAILED);
 		if (res->lst == NULL)
 			res->lst = last;
 		res->tlen += cnt;
-		endl = ft_strchr(last, '\n');
+		endl = gnl_strchr(last, '\n');
 	}
 	if (endl != NULL)
-		res->nlen = ft_strchr(last, '\0') - endl - 1;
+		res->nlen = gnl_strchr(last, '\0') - endl - 1;
 	if (!res->tlen)
 		return (FAILED);
 	return (SUCCESS);
@@ -80,7 +80,7 @@ static int	save_state(t_map *res, char *text, size_t j)
 		*(save + i++) = *(text + j++);
 	new->text = save;
 	new->next = NULL;
-	ft_lstclear(&(res->lst));
+	gnl_lstclear(&(res->lst));
 	res->lst = new;
 	res->tlen = res->nlen;
 	res->nlen = 0;
@@ -111,7 +111,7 @@ static int	get_line_from_buf(t_map *res, char **line)
 	}
 	if (res->nlen)
 		return (save_state(res, lst->text, j));
-	ft_lstclear(&(res->lst));
+	gnl_lstclear(&(res->lst));
 	return (SUCCESS);
 }
 
@@ -131,13 +131,13 @@ char	*get_next_line(int fd)
 	line = NULL;
 	if (get_text_from_file(res, buf) || get_line_from_buf(res, &line))
 	{
-		ft_mapdelone(&map, &res);
+		gnl_mapdelone(&map, &res);
 		free(buf);
 		free(line);
 		return (NULL);
 	}
 	free(buf);
 	if (res->lst == NULL)
-		ft_mapdelone(&map, &res);
+		gnl_mapdelone(&map, &res);
 	return (line);
 }
