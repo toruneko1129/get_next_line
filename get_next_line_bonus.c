@@ -6,20 +6,20 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:11 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/09/03 23:35:58 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/09/12 15:41:33 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-static int	load_state(int fd, t_map **map, t_map **res)
+static int	load_state(int fd, t_gnlmap **map, t_gnlmap **res)
 {
 	*res = *map;
 	while (*res != NULL && (*res)->fd != fd)
 		*res = (*res)->next;
 	if (*res != NULL)
 		return (SUCCESS);
-	*res = (t_map *)malloc(sizeof(t_map));
+	*res = (t_gnlmap *)malloc(sizeof(t_gnlmap));
 	if (*res == NULL)
 		return (FAILED);
 	(*res)->fd = fd;
@@ -31,11 +31,11 @@ static int	load_state(int fd, t_map **map, t_map **res)
 	return (SUCCESS);
 }
 
-static int	get_text_from_file(t_map *res, char *buf)
+static int	get_text_from_file(t_gnlmap *res, char *buf)
 {
-	t_buf	*last;
-	char	*endl;
-	ssize_t	cnt;
+	t_gnlbuf	*last;
+	char		*endl;
+	ssize_t		cnt;
 
 	last = res->lst;
 	endl = gnl_strchr(last, '\n');
@@ -60,14 +60,14 @@ static int	get_text_from_file(t_map *res, char *buf)
 	return (SUCCESS);
 }
 
-static int	save_state(t_map *res, char *text, size_t j)
+static int	save_state(t_gnlmap *res, char *text, size_t j)
 {
-	char	*save;
-	t_buf	*new;
-	size_t	i;
+	char		*save;
+	t_gnlbuf	*new;
+	size_t		i;
 
 	save = (char *)malloc((res->nlen + 1) * sizeof(char));
-	new = (t_buf *)malloc(sizeof(t_buf));
+	new = (t_gnlbuf *)malloc(sizeof(t_gnlbuf));
 	if (new == NULL || save == NULL)
 	{
 		free(save);
@@ -87,11 +87,11 @@ static int	save_state(t_map *res, char *text, size_t j)
 	return (SUCCESS);
 }
 
-static int	get_line_from_buf(t_map *res, char **line)
+static int	get_line_from_buf(t_gnlmap *res, char **line)
 {
-	t_buf	*lst;
-	size_t	i;
-	size_t	j;
+	t_gnlbuf	*lst;
+	size_t		i;
+	size_t		j;
 
 	*line = (char *)malloc((res->tlen - res->nlen + 1) * sizeof(char));
 	if (*line == NULL)
@@ -117,8 +117,8 @@ static int	get_line_from_buf(t_map *res, char **line)
 
 char	*get_next_line(int fd)
 {
-	static t_map	*map = NULL;
-	t_map			*res;
+	static t_gnlmap	*map = NULL;
+	t_gnlmap		*res;
 	char			*buf;
 	char			*line;
 

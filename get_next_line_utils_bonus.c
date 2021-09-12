@@ -6,15 +6,15 @@
 /*   By: hkawakit <hkawakit@student.42tokyo.j>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/28 21:09:21 by hkawakit          #+#    #+#             */
-/*   Updated: 2021/09/03 23:36:48 by hkawakit         ###   ########.fr       */
+/*   Updated: 2021/09/12 15:45:02 by hkawakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-void	gnl_lstclear(t_buf **lst)
+void	gnl_lstclear(t_gnlbuf **lst)
 {
-	t_buf	*front;
+	t_gnlbuf	*front;
 
 	front = *lst;
 	while (front != NULL)
@@ -27,9 +27,9 @@ void	gnl_lstclear(t_buf **lst)
 	}
 }
 
-void	gnl_mapdelone(t_map **map, t_map **res)
+void	gnl_mapdelone(t_gnlmap **map, t_gnlmap **res)
 {
-	t_map	*pre;
+	t_gnlmap	*pre;
 
 	if (*map == *res)
 	{
@@ -48,7 +48,7 @@ void	gnl_mapdelone(t_map **map, t_map **res)
 	*res = NULL;
 }
 
-char	*gnl_strchr(t_buf *lst, int c)
+char	*gnl_strchr(t_gnlbuf *lst, int c)
 {
 	char	*s;
 
@@ -66,11 +66,11 @@ char	*gnl_strchr(t_buf *lst, int c)
 	return (NULL);
 }
 
-int	gnl_lstadd_back(t_buf **last, char *buf, ssize_t cnt)
+int	gnl_lstadd_back(t_gnlbuf **last, char *buf, ssize_t cnt)
 {
-	t_buf	*new;
+	t_gnlbuf	*new;
 
-	new = (t_buf *)malloc(sizeof(t_buf));
+	new = (t_gnlbuf *)malloc(sizeof(t_gnlbuf));
 	if (new == NULL)
 		return (FAILED);
 	new->text = (char *)malloc((cnt + 1) * sizeof(char));
